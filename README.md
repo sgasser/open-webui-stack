@@ -2,11 +2,11 @@
 
 ## Stack
 
-- Open WebUI - Chat interface
-- LiteLLM - OpenAI proxy with tracking
-- SearXNG - Privacy-respecting metasearch engine
-- PostgreSQL 17 - Database
-- Caddy 2 - Auto HTTPS
+- [Open WebUI](https://github.com/open-webui/open-webui) - Chat interface
+- [LiteLLM](https://github.com/BerriAI/litellm) - OpenAI proxy with tracking
+- [SearXNG](https://github.com/searxng/searxng) - Privacy-respecting metasearch engine
+- [PostgreSQL](https://www.postgresql.org/) - Database
+- [Caddy](https://caddyserver.com/) - Auto HTTPS
 
 ## Quick Start
 
