@@ -19,3 +19,19 @@ search:
 outgoing:
   request_timeout: 10.0
   max_request_timeout: 15.0
+
+engines:
+  - name: brave
+    disabled: false
+  - name: google
+    disabled: false
+  - name: duckduckgo
+    disabled: false
+  - name: bing
+    disabled: false
+  - name: qwant
+    disabled: false
+  - name: startpage
+    disabled: false
+  - name: wikipedia
+    disabled: false
