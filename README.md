@@ -1,4 +1,15 @@
-# Open WebUI + LiteLLM
+# Open WebUI + LiteLLM Stack
+
+**ChatGPT-like interface. Your infrastructure. 100+ AI providers.**
+
+Stop vendor lock-in. Get OpenAI, Claude, Gemini, local models—all in one self-hosted chat interface with cost controls, team management, and private web search.
+
+**Why teams choose this:**
+- Switch between 100+ LLM providers without changing your workflow
+- Set spending limits and track costs across all providers
+- Keep your data and API keys on your own servers
+- Built-in web search—no Google/Bing API needed
+- Production-ready with auto-HTTPS in 2 commands
 
 ## Stack
 
