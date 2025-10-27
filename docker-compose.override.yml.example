@@ -1,0 +1,23 @@
+# Local development overrides
+# Copy this file to docker-compose.override.yml for local development
+#
+# Usage:
+#   cp docker-compose.override.yml.example docker-compose.override.yml
+#
+# This file is automatically merged with docker-compose.yml when running locally
+# The actual override file is gitignored and won't be deployed to production
+
+services:
+  # Expose ports directly for local access
+  open-webui:
+    ports:
+      - "3000:8080"
+
+  litellm:
+    ports:
+      - "4000:4000"
+
+  # Disable Caddy in local development
+  caddy:
+    deploy:
+      replicas: 0

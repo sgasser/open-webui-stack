@@ -25,6 +25,8 @@ services:
   litellm:
     image: ghcr.io/berriai/litellm-database:main-stable
     container_name: litellm
+    expose:
+      - "4000"
     volumes:
       - ./litellm.yaml:/app/config.yaml:ro
     environment:
