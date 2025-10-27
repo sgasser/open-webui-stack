@@ -1,0 +1,32 @@
+model_list:
+  - model_name: gpt-5-nano
+    litellm_params:
+      model: openai/gpt-5-nano
+      api_key: "os.environ/OPENAI_API_KEY"
+      reasoning_effort: minimal
+
+  - model_name: gpt-5-nano-thinking
+    litellm_params:
+      model: openai/responses/gpt-5-nano
+      api_key: "os.environ/OPENAI_API_KEY"
+      reasoning_effort: high
+      merge_reasoning_content_in_choices: true
+
+litellm_settings:
+  set_verbose: false
+  request_timeout: 600
+  extra_spend_tag_headers:
+    - "x-openwebui-user-id"
+    - "x-openwebui-user-email"
+    - "x-openwebui-user-name"
+
+general_settings:
+  master_key: "os.environ/LITELLM_MASTER_KEY"
+  litellm_salt_key: "os.environ/LITELLM_SALT_KEY"
+  user_header_mappings:
+    - header_name: X-OpenWebUI-User-Id
+      litellm_user_role: internal_user
+    - header_name: X-OpenWebUI-User-Email
+      litellm_user_role: customer
+    - header_name: X-OpenWebUI-User-Name
+      litellm_user_role: internal_user
