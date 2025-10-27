@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17-alpine
+    image: pgvector/pgvector:pg17
     container_name: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -83,8 +83,24 @@ services:
       - SEARXNG_QUERY_URL=http://searxng:8080
       - WEB_SEARCH_RESULT_COUNT=5
       - WEB_SEARCH_CONCURRENT_REQUESTS=3
+      - VECTOR_DB=pgvector
+      - PGVECTOR_DB_URL=postgresql://openwebui:${OPENWEBUI_DB_PASSWORD}@postgres:5432/openwebui
+      - RAG_EMBEDDING_MODEL=Qwen/Qwen3-Embedding-0.6B
+      - RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=True
+      - RAG_EMBEDDING_MODEL_AUTO_UPDATE=True
+      - CHUNK_SIZE=2000
+      - CHUNK_OVERLAP=300
+      - RAG_TOP_K=5
+      - RAG_RELEVANCE_THRESHOLD=0.3
+      - ENABLE_RAG_HYBRID_SEARCH=True
+      - RAG_HYBRID_BM25_WEIGHT=0.4
+      - RAG_RERANKING_MODEL=BAAI/bge-reranker-v2-gemma
+      - RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=True
+      - RAG_TOP_K_RERANKER=3
     env_file:
       - .env
+    volumes:
+      - open-webui-data:/app/backend/data
     depends_on:
       postgres:
         condition: service_healthy
@@ -128,3 +144,4 @@ volumes:
   caddy-config:
   searxng-config:
   searxng-data:
+  open-webui-data:
