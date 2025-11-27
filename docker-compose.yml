@@ -1,3 +1,6 @@
+# Open WebUI Stack with GPU Support
+# Configure RAG models in Admin UI → Settings → Documents
+
 services:
   postgres:
     image: pgvector/pgvector:pg17
@@ -68,37 +71,47 @@ services:
       - no-new-privileges:true
 
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    image: ghcr.io/open-webui/open-webui:cuda
     container_name: open-webui
     expose:
       - "8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     environment:
+      # Database
       - DATABASE_URL=postgresql://openwebui:${OPENWEBUI_DB_PASSWORD}@postgres:5432/openwebui
+
+      # LLM Backend (LiteLLM)
       - OPENAI_API_BASE_URL=http://litellm:4000/v1
       - OPENAI_API_KEY=${LITELLM_MASTER_KEY}
+
+      # Auth & Features
       - WEBUI_AUTH=True
       - ENABLE_COMMUNITY_SHARING=${ENABLE_COMMUNITY_SHARING:-false}
       - ENABLE_EVALUATION_ARENA_MODELS=${ENABLE_EVALUATION_ARENA_MODELS:-false}
       - ENABLE_MESSAGE_RATING=${ENABLE_MESSAGE_RATING:-false}
+
+      # Web Search
       - ENABLE_WEB_SEARCH=True
+      - ENABLE_RAG_WEB_SEARCH=True
       - WEB_SEARCH_ENGINE=searxng
       - SEARXNG_QUERY_URL=http://searxng:8080
       - WEB_SEARCH_RESULT_COUNT=5
       - WEB_SEARCH_CONCURRENT_REQUESTS=3
+
+      # Vector Database
       - VECTOR_DB=pgvector
       - PGVECTOR_DB_URL=postgresql://openwebui:${OPENWEBUI_DB_PASSWORD}@postgres:5432/openwebui
-      - RAG_EMBEDDING_MODEL=Qwen/Qwen3-Embedding-0.6B
-      - RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=True
-      - RAG_EMBEDDING_MODEL_AUTO_UPDATE=True
-      - CHUNK_SIZE=2000
-      - CHUNK_OVERLAP=300
-      - RAG_TOP_K=5
-      - RAG_RELEVANCE_THRESHOLD=0.3
-      - ENABLE_RAG_HYBRID_SEARCH=True
-      - RAG_HYBRID_BM25_WEIGHT=0.4
-      - RAG_RERANKING_MODEL=BAAI/bge-reranker-v2-gemma
-      - RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=True
-      - RAG_TOP_K_RERANKER=3
+
+      # GPU Acceleration (CUDA)
+      - USE_CUDA_DOCKER=true
+      - DEVICE_TYPE=cuda
+
     env_file:
       - .env
     volumes:

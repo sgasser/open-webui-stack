@@ -64,3 +64,37 @@ After deployment (local or production):
    - Choose the credential you just added
    - Configure model settings and save
 5. Models will automatically appear in Open WebUI
+
+## GPU Requirements
+
+This stack supports NVIDIA GPUs for RAG acceleration (embedding and reranking).
+
+### GPU Server Setup
+
+1. Provision a GPU instance with Ubuntu 24.04 + CUDA 12.6 + Docker
+2. Use `install.sh` as installation script, or run manually:
+
+```bash
+cd /opt
+git clone https://github.com/sgasser/open-webui-stack.git
+cd open-webui-stack
+cp .env.example .env
+# Edit .env with your secrets and domains
+docker compose up -d
+```
+
+3. Monitor GPU usage:
+
+```bash
+watch -n 1 nvidia-smi
+```
+
+## RAG Configuration
+
+Configure RAG models in **Admin UI → Settings → Documents**:
+
+- **Embedding Model**: Set your preferred embedding model (e.g., `BAAI/bge-m3`)
+- **Reranking Model**: Set reranking model (optional)
+- Click the download button next to the model name to initialize
+
+Models are downloaded on first use. GPU acceleration is automatic when CUDA is available
